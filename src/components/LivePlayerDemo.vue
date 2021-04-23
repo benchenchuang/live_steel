@@ -6,11 +6,15 @@
     </div>
     <div style="width:512px;height:300px;margin:auto" class="palyer2">
         <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
-        <LivePlayer  @snapOutside="snapOutside" ref="player2" videoUrl="http://localhost:8080/video.flv" live />
+        <LivePlayer  @snapOutside="snapOutside" ref="player2" videoUrl="rtmp://58.200.131.2:1935/livetv/hunantv" live />
     </div>
     <div style="width:512px;height:300px;margin:auto" class="palyer3">
         <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
-        <LivePlayer videoUrl="" live />
+        <LivePlayer videoUrl="http://127.0.0.1:3000/video.flv" live />
+    </div>
+    <div style="width:512px;height:300px;margin:auto" class="palyer4">
+        <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
+        <LivePlayer videoUrl="http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8" live />
     </div>
 
     <h1>{{ msg }}</h1>
