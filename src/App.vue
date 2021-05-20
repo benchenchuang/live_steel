@@ -8,24 +8,15 @@
       width="70%"
       :before-close="handleClose"
     >
-      <video
-        id="showVideo"
-        style="width:100%;height:60vh;"
-        autoplay
-        muted
-        class="video-js vjs-default-skin vjs-big-play-centered"
-        preload="auto"
-      >
-        <source id="playVideo" :src="replayUrl" type="video/mp4" />
-      </video>
+      <div style="width:100%;height:60vh;">
+        <LivePlayer :videoUrl="replayUrl" />
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import "video.js/dist/video-js.css";
-import videojs from "video.js";
-import "videojs-contrib-hls";
+import LivePlayer from '@liveqing/liveplayer'
 import requestApi from "@/request/index";
 import LiveAlarm from '@/components/liveAlarm'
 
@@ -33,6 +24,7 @@ export default {
   name: "App",
   components:{
     LiveAlarm,
+    LivePlayer
   },
   data() {
    return {
