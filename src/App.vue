@@ -32,7 +32,7 @@ import LiveAlarm from '@/components/liveAlarm'
 export default {
   name: "App",
   components:{
-    LiveAlarm
+    LiveAlarm,
   },
   data() {
    return {
