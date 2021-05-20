@@ -10,7 +10,8 @@
     </div>
     <div style="width:512px;height:300px;margin:auto" class="palyer3">
         <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
-        <LivePlayer videoUrl="http://127.0.0.1:3000/video.flv" live />
+        <LivePlayer videoUrl="http://192.168.78.82:8080/live/livestream01.flv" live />
+        <!-- <LivePlayer videoUrl="http://127.0.0.1:3000/video.flv" live /> -->
     </div>
     <div style="width:512px;height:300px;margin:auto" class="palyer4">
         <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
