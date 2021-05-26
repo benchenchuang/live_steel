@@ -60,7 +60,7 @@ export default {
           spinner: "el-icon-loading",
           background: "rgba(0, 0, 0, 0.7)"
         });
-        await requestApi.stopTransLive({ rtsp: item.rtsp });
+        await requestApi.streamStop({ rtsp: item.rtsp });
         this.liveSource.splice(index, 1);
         item.show = false;
         loading.close();
@@ -80,10 +80,12 @@ export default {
           let liveSource = this.liveSource;
 
           if (JSON.stringify(alarmList) != JSON.stringify(liveSource)) {
-            this.alarmBox = [];
-            this.alarmBox = alarmList;
+            this.alarmBox = JSON.parse(JSON.stringify(alarmList));
+            this.allAlarms.map(async item=>{
+              let res = await requestApi.streamStart({ rtsp: item.rtsp });
+                  item.rtsp = res.data;
+            })
             this.liveSource = JSON.parse(JSON.stringify(alarmList));
-            // this.showVideoModal(this.alarmBox);
           }
         }
       });
@@ -93,7 +95,7 @@ export default {
     clearInterval(this.liveTimer);
     if (this.alarmBox.length) {
       this.alarmBox.map(async item => {
-        await requestApi.stopTransLive({ rtsp: item.rtsp });
+        await requestApi.streamStop({ rtsp: item.rtsp });
       });
     }
   }

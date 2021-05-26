@@ -20,14 +20,6 @@
           :key="activeName+'_'+ item.timeId"
         >
           <p class="live_device">{{ activeName }}号皮带{{item.area}}监控区域</p>
-          <video
-            :id="'live_hls_' + activeName + '_' + item.timeId + '_' + item.belt"
-            
-            autoplay
-            muted
-            class="video-js vjs-default-skin vjs-big-play-centered"
-            preload="auto"
-          ></video>
           <div style="width:100%;height:100%;">
             <LivePlayer :videoUrl="item.rtsp" live />
           </div>
@@ -91,13 +83,13 @@ export default {
     }
   },
   created(){
-    setTimeout(()=>{
-      this.handleCurrentChange(this.currentPage,false);
-    },3000)
-    this.timer = setInterval(()=>{
-      console.log('开始转换')
-      this.handleCurrentChange(this.currentPage,false);
-    },5*1000*60)
+    // setTimeout(()=>{
+    //   this.handleCurrentChange(this.currentPage,false);
+    // },3000)
+    // this.timer = setInterval(()=>{
+    //   console.log('开始转换')
+    //   this.handleCurrentChange(this.currentPage,false);
+    // },5*1000*60)
   },
   methods: {
     tabClickEvent(no) {
@@ -105,28 +97,10 @@ export default {
     },
     async transferLive(data) {
       data.map(async (item, index) => {
-        let res = await requestApi.startTransLive({ rtsp: item.rtsp });
-        setTimeout(() => {
-          item.live = res.data;
-          let singlePlayer = videojs(
-            "live_hls_" + this.activeName + "_" + item.timeId + "_" + item.belt,
-            {
-              autoplay: true, //自动播放
-              controls: false, //控件显示
-              preload: 'auto',
-              responsive: true
-            }
-          );
-          console.log( "live_hls_" + this.activeName + "_" + item.timeId + "_" + item.belt)
-        //   item.live = item.live.replace(
-        //     "http://127.0.0.1:80",
-        //     "http://47.93.23.221:9991"
-        //   );
-          singlePlayer.src({ src: item.live, type: "application/x-mpegURL" });
-          // singlePlayer.play();
-          // singlePlayer.muted = false;
-        }, 1000);
+        let res = await requestApi.streamStart({ rtsp: item.rtsp });
+        item.rtsp = res.data;
       });
+      this.lives = data;
     },
     handleCurrentChange(page,isFresh=true){
         let allLives = this.allLives;
@@ -135,7 +109,7 @@ export default {
           let oldLives = JSON.parse(JSON.stringify(this.lives));
           if(oldLives.length && isFresh){
             oldLives.map(async item=>{
-              await requestApi.stopTransLive({ rtsp: item.rtsp });
+              await requestApi.streamStop({ rtsp: item.rtsp });
             });
           }
           let lives = allLives.slice(
@@ -145,8 +119,7 @@ export default {
           lives.map((item,index) => {
             item.timeId = new Date().getTime()+'_'+index;
           });
-          this.lives = lives
-          this.transferLive(this.lives);
+          this.transferLive(lives);
     },
     async getLives(b_no) {
       try {
@@ -164,8 +137,7 @@ export default {
           lives.map((item,index) => {
             item.timeId = new Date().getTime()+'_'+index;
           });
-          this.lives = lives
-          this.transferLive(this.lives);
+          this.transferLive(lives);
         } else {
           this.allLives = [];
           this.lives = [];
@@ -176,10 +148,10 @@ export default {
     }
   },
   beforeDestroy() {
-    clearInterval(this.timer);
+    // clearInterval(this.timer);
     let lives = this.lives;
     lives.map(async item => {
-      await requestApi.stopTransLive({ rtsp: item.rtsp });
+      await requestApi.streamStop({ rtsp: item.rtsp });
     });
   }
 };

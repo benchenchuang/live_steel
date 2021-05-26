@@ -23,7 +23,10 @@ export default{
     addLiveDevice:(params)=>axiosApi.postAixos('v1.0/camera',params),
     getLiveDevice:()=>axiosApi.getAxios('v1.0/camera'),
     //启动转码
-    startTransLive:(params)=>axiosApi.postAixos('transcode/v1.0/start',params,'code'),
+    transcodeStart:(params)=>axiosApi.postAixos('transcode/v1.0/start',params,'code'),
     //结束转码
-    stopTransLive:(params)=>axiosApi.postAixos('transcode/v1.0/stop',params,'code'),
+    transcodeStop:(params)=>axiosApi.postAixos('transcode/v1.0/stop',params,'code'),
+    //新的转码
+    streamStart:(params)=>axiosApi.postAixos('pushstream/v1.0/start',params,'code'),
+    streamStop:(params)=>axiosApi.postAixos('pushstream/v1.0/stop',params,'code'),
 }

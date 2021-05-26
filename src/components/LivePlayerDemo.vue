@@ -17,6 +17,10 @@
         <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
         <LivePlayer videoUrl="http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8" live />
     </div>
+    <div style="width:512px;height:300px;margin:auto" class="palyer4">
+        <!-- 用 http://localhost:8080 访问demo可以播放下面的flv -->
+        <LivePlayer videoUrl="rtmp://cloud.liveqing.com:10085/hls/LiveGBS0013402000000132000026434020000001320000264?k=LiveGBS0013402000000132000026434020000001320000264.3004ec4f13fcc1896c&token=y8meV5ErrHi6nFS6njxOXmo0BmFKvOP59-R0ofoHw8S.joxNjIxOTE1ODYzLCJwIjoiOWI1OTYzNWU2NzMwN2U4MGEzZTU2ODdiODc0NjAxNjZkNzNlOGY1MDY1YzIyNDUwOTRkMzg4ZTc0NzNjMjg0ZCIsInQiOjE2MjE5MTU1NjMsInUiOiJjODBjM2MwNDNiIn0eyJlI.ciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJhbG" live />
+    </div>
 
     <h1>{{ msg }}</h1>
     <h3>相关说明</h3>

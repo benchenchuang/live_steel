@@ -5,7 +5,7 @@ axios.defaults.timeout = 10000;
 // axios.defaults.baseURL = process.env.api;
 // export const baseUrl = process.env.api;
 const collectUrl = '/api/n_gather';
-const liveUrl = '/live'
+const liveUrl = ''
 
 //发送拦截
 axios.interceptors.request.use(

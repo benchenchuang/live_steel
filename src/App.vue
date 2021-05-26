@@ -53,7 +53,7 @@ export default {
     },
     async showPlayLive(url) {
       this.playLiveUrl = url;
-      let res = await requestApi.startTransLive({ rtsp: url });
+      let res = await requestApi.streamStart({ rtsp: url });
       setTimeout(() => {
         let singlePlayer = videojs("showVideo", {
           autoplay: true, //自动播放
@@ -69,7 +69,7 @@ export default {
     //关闭播放视频
     async handleClose() {
       this.videoVisible = false;
-      await requestApi.stopTransLive({ rtsp: this.playLiveUrl });
+      await requestApi.streamStop({ rtsp: this.playLiveUrl });
       let singlePlayer = videojs("showVideo");
       singlePlayer.pause();
       this.replayUrl = null;
@@ -102,7 +102,7 @@ export default {
   },
   async beforeDestroy() {
     if (this.playLiveUrl) {
-      await requestApi.stopTransLive({ rtsp: this.playLiveUrl });
+      await requestApi.streamStop({ rtsp: this.playLiveUrl });
     }
   }
 };
