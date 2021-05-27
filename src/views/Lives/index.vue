@@ -79,7 +79,9 @@ export default {
       this.currentPage = 1;
       this.allLives = [];
       this.lives = [];
-      this.getLives(val);
+      this.$nextTick(()=>{
+        this.getLives(val);
+      })
     }
   },
   created(){
