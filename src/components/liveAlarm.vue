@@ -83,7 +83,7 @@ export default {
             this.alarmBox = JSON.parse(JSON.stringify(alarmList));
             this.allAlarms.map(async item=>{
               let res = await requestApi.streamStart({ rtsp: item.rtsp });
-                  item.rtsp = res.data;
+                  item.rtsp = this.$transFlv(res.data);
             })
             this.liveSource = JSON.parse(JSON.stringify(alarmList));
           }

@@ -14,6 +14,13 @@ Vue.use(less)
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+Vue.prototype.$transFlv = (url)=>{
+  // rtmp://192.168.174.19:1935/live/8a912d4c
+  // to 
+  // http://....8a912d4c.flv
+  url = url.replace('rtmp://','http://');
+  return url+'.flv'
+}
 /* eslint-disable no-new */
 // new Vue({
 //   el: '#app',

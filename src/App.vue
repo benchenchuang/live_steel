@@ -9,7 +9,7 @@
       :before-close="handleClose"
     >
       <div style="width:100%;height:60vh;">
-        <LivePlayer :videoUrl="replayUrl" />
+        <LivePlayer :videoUrl="replayUrl" autoplay />
       </div>
     </el-dialog>
   </div>
@@ -38,40 +38,19 @@ export default {
   methods: {
     showPlayVideo(url) {
       // this.replayUrl = require(`${url}.mp4`);
-      this.replayUrl = require(`${url}`);
-      // this.replayUrl = require('C:/Intel/steel/static/test.mp4');
-      setTimeout(() => {
-        let singlePlayer = videojs("showVideo", {
-          autoplay: true, //自动播放
-          contcontrols: false, //控件显示
-          preload: 'auto',
-          responsive: true
-        });
-        singlePlayer.play();
-        // singlePlayer.muted = false;
-      },100);
+      this.replayUrl = url;
+      this.videoVisible = true;
     },
     async showPlayLive(url) {
       this.playLiveUrl = url;
       let res = await requestApi.streamStart({ rtsp: url });
-      setTimeout(() => {
-        let singlePlayer = videojs("showVideo", {
-          autoplay: true, //自动播放
-          cocontrols: false, //控件显示
-          preload: 'auto',
-          responsive: true
-        });
-        singlePlayer.src({ src: res.data, type: "application/x-mpegURL" });
-        singlePlayer.play();
-        singlePlayer.muted = false;
-      }, 200);
+      this.videoVisible = true;
+      this.replayUrl = this.$transFlv(res.data);
     },
     //关闭播放视频
     async handleClose() {
       this.videoVisible = false;
       await requestApi.streamStop({ rtsp: this.playLiveUrl });
-      let singlePlayer = videojs("showVideo");
-      singlePlayer.pause();
       this.replayUrl = null;
     },
   },

@@ -100,7 +100,7 @@ export default {
     async transferLive(data) {
       data.map(async (item, index) => {
         let res = await requestApi.streamStart({ rtsp: item.rtsp });
-        item.rtsp = res.data;
+        item.rtsp = this.$transFlv(res.data);
       });
       this.lives = data;
     },
