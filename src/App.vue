@@ -39,39 +39,18 @@ export default {
     showPlayVideo(url) {
       // this.replayUrl = require(`${url}.mp4`);
       this.replayUrl = require(`${url}`);
-      // this.replayUrl = require('C:/Intel/steel/static/test.mp4');
-      setTimeout(() => {
-        let singlePlayer = videojs("showVideo", {
-          autoplay: true, //自动播放
-          contcontrols: false, //控件显示
-          preload: 'auto',
-          responsive: true
-        });
-        singlePlayer.play();
-        // singlePlayer.muted = false;
-      },100);
+      this.videoVisible = true;
     },
     async showPlayLive(url) {
       this.playLiveUrl = url;
       let res = await requestApi.streamStart({ rtsp: url });
-      setTimeout(() => {
-        let singlePlayer = videojs("showVideo", {
-          autoplay: true, //自动播放
-          cocontrols: false, //控件显示
-          preload: 'auto',
-          responsive: true
-        });
-        singlePlayer.src({ src: res.data, type: "application/x-mpegURL" });
-        singlePlayer.play();
-        singlePlayer.muted = false;
-      }, 200);
+      this.replayUrl = res.data;
+      this.videoVisible = true;
     },
     //关闭播放视频
     async handleClose() {
       this.videoVisible = false;
       await requestApi.streamStop({ rtsp: this.playLiveUrl });
-      let singlePlayer = videojs("showVideo");
-      singlePlayer.pause();
       this.replayUrl = null;
     },
   },
