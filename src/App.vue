@@ -9,7 +9,7 @@
       :before-close="handleClose"
     >
       <div style="width:100%;height:60vh;">
-        <LivePlayer :videoUrl="replayUrl" autoplay />
+        <LivePlayer :videoUrl="replayUrl" autoplay controls="false" />
       </div>
     </el-dialog>
   </div>
