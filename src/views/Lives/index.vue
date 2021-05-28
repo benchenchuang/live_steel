@@ -14,12 +14,6 @@
         </el-tabs>
       </div>
       <div class="lives_box">
-        <videoPlayer
-      ref="videoPlayer"
-      :options="videoOptions"
-      class="vjs-custom-skin videoPlayer"
-      :playsinline="true"
-    />
         <div
           class="live_item"
           v-for="item in lives"
