@@ -11,7 +11,7 @@
           >
         </div>
         <div style="width:100%;height:140pxmargin:auto">
-          <LivePlayer :videoUrl="item.rtsp" live />
+          <LivePlayer :videoUrl="item.rtsp" live controls="false" />
         </div>
       </div>
     </div>
