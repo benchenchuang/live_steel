@@ -10,8 +10,8 @@
             >关闭</el-button
           >
         </div>
-        <div style="width:100%;height:140pxmargin:auto">
-          <LivePlayer :videoUrl="item.rtsp" live controls="false" />
+        <div style="position: relative;width:100%;height:140pxmargin:auto">
+          <LivePlayer aspect='fullscreen' :videoUrl="item.rtsp" autoplay live :controls="false"/>
         </div>
       </div>
     </div>
