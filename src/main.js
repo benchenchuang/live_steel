@@ -19,6 +19,7 @@ Vue.prototype.$transFlv = (url)=>{
   // to 
   // http://....8a912d4c.flv
   url = url.replace('rtmp://','http://');
+  url = url.replace(':1935',':8080');
   return url+'.flv'
 }
 /* eslint-disable no-new */

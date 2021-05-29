@@ -21,7 +21,7 @@
         >
           <p class="live_device">{{ activeName }}号皮带{{item.area}}监控区域</p>
           <div style="position: relative;width:100%;height:100%;">
-            <LivePlayer :videoUrl="item.rtsp" live aspect='fullscreen' :controls="false" />
+            <LivePlayer :videoUrl="item.rtsp" live aspect='fullscreen'/>
           </div>
         </div>
         <template v-if="lives.length < maxSize">
@@ -101,6 +101,7 @@ export default {
       data.map(async (item, index) => {
         let res = await requestApi.streamStart({ rtsp: item.rtsp });
         item.rtsp = this.$transFlv(res.data);
+        console.log(item.rtsp)
       });
       this.lives = data;
     },
