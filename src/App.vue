@@ -8,8 +8,8 @@
       width="70%"
       :before-close="handleClose"
     >
-      <div style="width:100%;height:60vh;">
-        <LivePlayer :videoUrl="replayUrl" autoplay controls="false" />
+      <div style="position: relative;width:100%;height:60vh;">
+        <LivePlayer :videoUrl="replayUrl" autoplay aspect='fullscreen'/>
       </div>
     </el-dialog>
   </div>

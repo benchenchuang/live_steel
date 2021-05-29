@@ -20,8 +20,8 @@
           :key="activeName+'_'+ item.timeId"
         >
           <p class="live_device">{{ activeName }}号皮带{{item.area}}监控区域</p>
-          <div style="width:100%;height:100%;">
-            <LivePlayer :videoUrl="item.rtsp" live stretch="true" controls="false" />
+          <div style="position: relative;width:100%;height:100%;">
+            <LivePlayer :videoUrl="item.rtsp" live aspect='fullscreen' :controls="false" />
           </div>
         </div>
         <template v-if="lives.length < maxSize">
