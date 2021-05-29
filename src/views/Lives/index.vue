@@ -21,7 +21,7 @@
         >
           <p class="live_device">{{ activeName }}号皮带{{item.area}}监控区域</p>
           <div style="position: relative;width:100%;height:100%;">
-            <LivePlayer aspect='fullscreen' :videoUrl="item.rtsp" live :controls="false" autoplay/>
+            <LivePlayer aspect='fullscreen' :videoUrl="item.rtsp" live autoplay/>
           </div>
         </div>
         <template v-if="lives.length < maxSize">
