@@ -4,7 +4,7 @@
             <!-- <router-link :to="{name:'home'}"><img class="logo" :src="logoUrl"/></router-link> -->
             <h2 class="head">
                 <slot>
-                    <span>产线监控系统</span>
+                    <span>皮带监控</span>
                 </slot>
             </h2>
             <div class="flex_item header_info flex">

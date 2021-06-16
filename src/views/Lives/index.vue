@@ -80,6 +80,7 @@ export default {
       this.allLives = [];
       this.lives = [];
       this.$nextTick(()=>{
+        console.log('tab-val:'+val)
         this.getLives(val);
       })
     }
