@@ -256,9 +256,10 @@ export default {
                                 position: 'bottom-right',
                                 duration: 0,
                                 onClose:result=>{
-                                    if(!this.isAutoCancel){//手动
-                                        console.log('手动取消的')
-                                    }
+                                    this.warnObject = '';
+                                    // if(!this.isAutoCancel){//手动
+                                    //     console.log('手动取消的')
+                                    // }
                                 },
                                 onClick:res=>{
                                     this.$router.push({path:'/release'})
