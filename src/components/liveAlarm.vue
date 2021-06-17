@@ -1,7 +1,7 @@
 <template>
-  <div v-divDrag class="live_modal drag-body" v-if="true">
+  <div v-divDrag class="live_modal drag-body">
     <div v-for="(item, index) in alarmBox" :key="item.id">
-      <div class="live_item " v-if="item.show">
+      <div class="live_item">
         <div class="live_item_info flex">
           <p class="flex_item">
             #{{ item.b_no }}号皮带#{{ item.d_no }}设备{{ item.msg }}
@@ -10,7 +10,7 @@
             >关闭</el-button
           >
         </div>
-        <div style="position: relative;width:100%;height:140pxmargin:auto">
+        <div style="position: relative;width:100%;height:140px;margin:auto">
           <LivePlayer aspect='fullscreen' :videoUrl="item.rtsp" autoplay live/>
         </div>
       </div>
@@ -81,7 +81,7 @@ export default {
 
           if (JSON.stringify(alarmList) != JSON.stringify(liveSource)) {
             this.alarmBox = JSON.parse(JSON.stringify(alarmList));
-            this.allAlarms.map(async item=>{
+            this.alarmBox.map(async item=>{
               let res = await requestApi.streamStart({ rtsp: item.rtsp });
                   item.rtsp = res.data;
             })
