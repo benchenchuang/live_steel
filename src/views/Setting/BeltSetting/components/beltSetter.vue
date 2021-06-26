@@ -1,7 +1,9 @@
 <template>
     <div>
+        <site-header>
+            <span>设置</span>
+        </site-header>
         <div class="setter_box">
-            <h2 class="title">设备设置</h2>
             <div class="setter_content">
                 <el-table :inline="true" size="small"
                     ref="multipleTable"
@@ -18,7 +20,7 @@
                     <el-table-column
                     label="序号"
                     type="index"
-                    width="120"
+                    width="50"
                     align="center">
                     </el-table-column>
                     <el-table-column
@@ -61,9 +63,19 @@
                 <el-button type="success" @click="tableVisible=true">新增</el-button>
             </div>
         </div>
+        <site-footer :isHome="true">
+            <span class="status no_status">失去连接</span>
+            <span class="status none_status">连接正常</span>
+        </site-footer>
 
-        <el-dialog :title="isEdit?'修改设备':'新增设备'" :visible.sync="tableVisible" center width="500px">
+        <el-dialog :title="isEdit?'修改':'新增'" :visible.sync="tableVisible" center width="500px">
             <el-form :model="ruleForm" ref="ruleForm" inline label-width="140px">
+                <el-form-item label="通信方式">
+                    <el-select v-model="ruleForm.port" placeholder="请选择通信方式">
+                        <el-option label="TCP" value="shanghai"></el-option>
+                        <el-option label="RTU" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="名称" prop="name">
                     <el-input type="text" v-model="ruleForm.name"></el-input>
                 </el-form-item>
@@ -89,6 +101,8 @@
     </div>
 </template>
 <script>
+import SiteFooter from '@/components/footer'
+import SiteHeader from '@/components/header'
 import requestApi from '@/request/index'
 import {areaMixin} from '@/mixins/area'
 
@@ -103,6 +117,10 @@ let originForm = {
 export default {
     name:'Setter',
     mixins:[areaMixin],
+    components:{
+        SiteFooter,
+        SiteHeader
+    },
     data(){
         return{
             tableVisible:false,
@@ -202,6 +220,7 @@ export default {
                     if(isEdit){
                         tipString = '恭喜你，修改成功'
                     }
+                    this.isEdit = false
                     this.$message({
                         message: tipString,
                         type: 'success'
@@ -239,12 +258,6 @@ export default {
     padding: 15px;
     background: #0a346e;
     box-sizing: border-box;
-    .title{
-        font-size: 18px;
-        color: #fff;
-        font-weight: 500;
-        margin-bottom: 20px;
-    }
     .setter_content{
         background: #fff;
     }

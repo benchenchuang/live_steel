@@ -16,9 +16,9 @@ export default{
     //解除报警
     releaseAlarm:(params)=>axiosApi.postAixos('v1.0/alarm',params),
     //增改设备
-    addDevice:(params)=>axiosApi.postAixos('v1.0/device_rtu',params),
+    addDevice:(params)=>axiosApi.postAixos('v1.0/device',params),
     //查询设备
-    getDevice:()=>axiosApi.getAxios('v1.0/device_rtu'),
+    getDevice:()=>axiosApi.getAxios('v1.0/device'),
     //增改监控
     addLiveDevice:(params)=>axiosApi.postAixos('v1.0/camera',params),
     getLiveDevice:()=>axiosApi.getAxios('v1.0/camera'),

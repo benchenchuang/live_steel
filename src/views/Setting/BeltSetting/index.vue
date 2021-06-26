@@ -30,12 +30,28 @@
                     align="center">
                     </el-table-column>
                     <el-table-column
+                    prop="coll_type"
+                    label="采集方式"
+                    width="80"
+                    align="center">
+                    </el-table-column>
+                    <el-table-column
+                    prop="ip"
+                    label="IP地址"
+                    align="center">
+                    </el-table-column>
+                    <el-table-column
                     prop="port"
+                    label="端口号"
+                    align="center">
+                    </el-table-column>
+                    <el-table-column
+                    prop="com"
                     label="串口号"
                     align="center">
                     </el-table-column>
                     <el-table-column
-                    prop="baud"
+                    prop="band"
                     label="波特率"
                     align="center">
                     </el-table-column>
@@ -70,15 +86,31 @@
 
         <el-dialog :title="isEdit?'修改':'新增'" :visible.sync="tableVisible" center width="500px">
             <el-form :model="ruleForm" ref="ruleForm" inline label-width="140px">
+                <el-form-item label="通信方式">
+                    <el-select v-model="ruleForm.coll_type" placeholder="请选择通信方式">
+                        <el-option label="TCP" value="tcp"></el-option>
+                        <el-option label="RTU" value="rtu"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="名称" prop="name">
                     <el-input type="text" v-model="ruleForm.name"></el-input>
                 </el-form-item>
-                <el-form-item label="串口号" prop="port">
-                    <el-input type="text" v-model="ruleForm.port"></el-input>
-                </el-form-item>
-                <el-form-item label="波特率" prop="baud">
-                    <el-input type="text" v-model="ruleForm.baud"></el-input>
-                </el-form-item>
+                <template v-if="ruleForm.coll_type=='tcp'">
+                    <el-form-item label="IP地址" prop="ip">
+                        <el-input type="text" v-model="ruleForm.ip"></el-input>
+                    </el-form-item>
+                    <el-form-item label="端口号" prop="port">
+                        <el-input type="text" v-model="ruleForm.port"></el-input>
+                    </el-form-item>
+                </template>
+                <template v-else>
+                    <el-form-item label="串口号" prop="com">
+                        <el-input type="text" v-model="ruleForm.com"></el-input>
+                    </el-form-item>
+                    <el-form-item label="波特率" prop="band">
+                        <el-input type="text" v-model="ruleForm.band"></el-input>
+                    </el-form-item>
+                </template>
                 <el-form-item label="从站地址" prop="slave">
                     <el-input type="text" v-model="ruleForm.slave"></el-input>
                 </el-form-item>
@@ -101,9 +133,12 @@ import requestApi from '@/request/index'
 import {areaMixin} from '@/mixins/area'
 
 let originForm = {
+    coll_type:'tcp',
     name:'',
-    baud:'',
+    ip:'',
     port:'',
+    com:'',
+    band:'',
     slave:'',
     desc:''
 }
@@ -153,11 +188,11 @@ export default {
             
             for(var i = 0; i < getList.length; i++){
                 var obj = getList[i];
-                var boxString = obj.name+obj.port+obj.baud+obj.slave;
+                var boxString = obj.name+obj.coll_type+obj.slave;
                 var flag = false;
                 for(var j = 0; j < deleteBox.length; j++){
                     var aj = deleteBox[j];
-                    var itemString = aj.name+aj.port+aj.baud+aj.slave;;
+                    var itemString = aj.name+aj.coll_type+aj.slave;;
                     if(boxString == itemString){
                         flag = true;
                         break;
@@ -191,13 +226,28 @@ export default {
                 this.$message.error('请输入名称');
                 return false;
             }
-            if(!query.port){
-                this.$message.error('请输入串口号');
-                return false;
-            }
-            if(!query.baud){
-                this.$message.error('请输入波特率');
-                return false;
+            if(query.coll_type=='tcp'){
+                if(!query.ip){
+                    this.$message.error('请输入IP地址');
+                    return false;
+                }
+                if(!query.port){
+                    this.$message.error('请输入端口号');
+                    return false;
+                }
+                delete query.com;
+                delete query.band;
+            }else{
+                if(!query.com){
+                    this.$message.error('请输入串口号');
+                    return false;
+                }
+                if(!query.band){
+                    this.$message.error('请输入波特率');
+                    return false;
+                }
+                delete query.ip;
+                delete query.port;
             }
             if(!query.slave){
                 this.$message.error('请输入从站地址');
