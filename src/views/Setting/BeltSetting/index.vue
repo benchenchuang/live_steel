@@ -51,7 +51,7 @@
                     align="center">
                     </el-table-column>
                     <el-table-column
-                    prop="band"
+                    prop="baud"
                     label="波特率"
                     align="center">
                     </el-table-column>
@@ -107,8 +107,8 @@
                     <el-form-item label="串口号" prop="com">
                         <el-input type="text" v-model="ruleForm.com"></el-input>
                     </el-form-item>
-                    <el-form-item label="波特率" prop="band">
-                        <el-input type="text" v-model="ruleForm.band"></el-input>
+                    <el-form-item label="波特率" prop="baud">
+                        <el-input type="text" v-model="ruleForm.baud"></el-input>
                     </el-form-item>
                 </template>
                 <el-form-item label="从站地址" prop="slave">
@@ -138,7 +138,7 @@ let originForm = {
     ip:'',
     port:'',
     com:'',
-    band:'',
+    baud:'',
     slave:'',
     desc:''
 }
@@ -235,19 +235,15 @@ export default {
                     this.$message.error('请输入端口号');
                     return false;
                 }
-                delete query.com;
-                delete query.band;
             }else{
                 if(!query.com){
                     this.$message.error('请输入串口号');
                     return false;
                 }
-                if(!query.band){
+                if(!query.baud){
                     this.$message.error('请输入波特率');
                     return false;
                 }
-                delete query.ip;
-                delete query.port;
             }
             if(!query.slave){
                 this.$message.error('请输入从站地址');
