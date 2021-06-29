@@ -172,7 +172,7 @@ export default {
             let index = e.$index;
             let item = JSON.parse(JSON.stringify(e.row));
             this.isEdit = true;
-            this.eidtIndex = index;
+            this.editIndex = index;
             this.ruleForm = item;
             this.tableVisible = true;
         },
