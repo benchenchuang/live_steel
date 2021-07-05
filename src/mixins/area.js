@@ -42,7 +42,8 @@ export const areaMixin={
             requestApi.getArea().then(res=>{
                 if(res.code==1000){
                     this.beltBox = res.data;
-                    this.beltBox = this.beltBox.sort((a,b)=>a.b_no-b.b_no);
+                    // this.beltBox = this.beltBox.sort((a,b)=>a.b_no-b.b_no);
+                    this.beltBox = this.sortMixData(this.beltBox);
                     if(!this.activeName){
                         this.activeName = res.data.length?res.data[0].b_no+'':''
                     }
@@ -103,6 +104,35 @@ export const areaMixin={
                     }
                 }
             })
+        },
+        sortMixData(data){
+            let numberBox = [];
+            let lowerBox = [];
+            let upperBox = [];
+
+            data.map(item=>{
+                let first = item.b_no[0].charCodeAt();
+                //对首字符进行判断
+                if(first >= 97 && first<= 122){
+                    //首字符为小写字母
+                    lowerBox.push(item)
+                }else if(first >= 65 && first<= 90){
+                    //首字符为大写字母
+                    upperBox.push(item)
+                }else{
+                    //首字符为数字
+                    numberBox.push(item)
+                }
+            });
+
+            numberBox = this.reverserBox(numberBox);
+            lowerBox = this.reverserBox(lowerBox);
+            upperBox = this.reverserBox(upperBox);
+            return [...numberBox,...lowerBox,...upperBox]
+        },
+        reverserBox(data){
+            data.sort(function (a, b) { return b.b_no.charCodeAt() - a.b_no.charCodeAt() }).reverse();
+            return data
         }
     },
     beforeDestroy(){
