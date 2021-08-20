@@ -84,7 +84,7 @@
             <span class="status none_status">连接正常</span>
         </site-footer>
 
-        <el-dialog :title="isEdit?'修改':'新增'" :visible.sync="tableVisible" center width="500px">
+        <el-dialog :title="isEdit?'修改':'新增'" :visible.sync="tableVisible" :before-close="closeDialog" center width="500px">
             <el-form :model="ruleForm" ref="ruleForm" inline label-width="140px">
                 <el-form-item label="通信方式">
                     <el-select v-model="ruleForm.coll_type" placeholder="请选择通信方式">
@@ -284,6 +284,10 @@ export default {
         //表单重置
         resetForm(formName) {
             this.$refs[formName].resetFields();
+            this.ruleForm = {...originForm}
+            this.tableVisible = false;
+        },
+        closeDialog(){
             this.ruleForm = {...originForm}
             this.tableVisible = false;
         }
