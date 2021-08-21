@@ -88,7 +88,7 @@
         </site-footer>
 
         <el-dialog :title="isEdit?'修改':'新增'" :visible.sync="tableVisible" :before-close="closeDialog" center width="500px">
-            <el-form :model="ruleForm" ref="ruleForm" inline label-width="140px">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" inline label-width="140px">
                 <el-form-item label="名称" prop="name">
                     <el-input type="text" v-model="ruleForm.name"></el-input>
                 </el-form-item>
@@ -116,7 +116,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="resetForm('ruleForm')">取 消</el-button>
-                <el-button type="primary" @click="submitInfo">确 定</el-button>
+                <el-button type="primary" @click="submitInfo('ruleForm')">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -151,7 +151,33 @@ export default {
             ruleForm:{...originForm},
             deleteBox:[],
             isEdit:false,
-            eidtIndex:''
+            eidtIndex:'',
+            rules: {
+                name: [
+                    { required: true, message: '请输入名称', trigger: 'blur' }
+                ],
+                ip: [
+                    { required: true, message: '请输入ip地址', trigger: 'blur' }
+                ],
+                port: [
+                    { required: true, message: '请输入端口号', trigger: 'blur' }
+                ],
+                belt: [
+                    { required: true, message: '请输入所属皮带', trigger: 'blur' }
+                ],
+                area: [
+                    { required: true, message: '请输入监视区域', trigger: 'blur' }
+                ],
+                user: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' }
+                ],
+                device: [
+                    { required: true, message: '请输入设备', trigger: 'blur' }
+                ]
+            }
         }
     },
     created(){
@@ -212,70 +238,46 @@ export default {
             })
         },
         //提交表单信息
-        submitInfo(){
-            let query = JSON.parse(JSON.stringify(this.ruleForm));
-            let list = this.list;
-            let isEdit = this.isEdit;
-            let editIndex = this.editIndex;
-            if(!query.name){
-                this.$message.error('请输入名称');
-                return false;
-            }
-            if(!query.ip){
-                this.$message.error('请输入ip地址');
-                return false;
-            }
-            if(!query.port){
-                this.$message.error('请输入端口号');
-                return false;
-            }
-            if(!query.belt){
-                this.$message.error('请输入所属皮带');
-                return false;
-            }
-            if(!query.area){
-                this.$message.error('请输入监视区域');
-                return false;
-            }
-            if(!query.user){
-                this.$message.error('请输入用户名');
-                return false;
-            }
-            if(!query.password){
-                this.$message.error('请输入密码');
-                return false;
-            }
-            if(!query.password){
-                this.$message.error('请输入皮带编号');
-                return false;
-            }
-            if(!Array.isArray(query.device)){
-                query.device = query.device.split(',');
-            }
-            // query.belt = Number(query.belt)
-            query.port = Number(query.port)
-            if(isEdit){
-                list[editIndex] = query;
-            }else{
-                list = [...list,query];
-            }
-            requestApi.addLiveDevice({cameras:list}).then(res=>{
-                if(res.code==1000){
-                    let tipString = '恭喜你，添加成功'
-                    if(isEdit){
-                        tipString = '恭喜你，修改成功'
+        submitInfo(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let query = JSON.parse(JSON.stringify(this.ruleForm));
+                    let list = this.list;
+                    let isEdit = this.isEdit;
+                    let editIndex = this.editIndex;
+                    
+                    if(!Array.isArray(query.device)){
+                        query.device = query.device.split(',');
                     }
-                    this.isEdit = false
-                    this.$message({
-                        message: tipString,
-                        type: 'success'
-                    });
-                    this.getDeviceList();
-                    this.resetForm('ruleForm')
-                }else{
-                    this.$message.error('添加错误，请重试');
+                    // query.belt = Number(query.belt)
+                    query.port = Number(query.port)
+                    if(isEdit){
+                        list[editIndex] = query;
+                    }else{
+                        list = [...list,query];
+                    }
+                    requestApi.addLiveDevice({cameras:list}).then(res=>{
+                        if(res.code==1000){
+                            let tipString = '恭喜你，添加成功'
+                            if(isEdit){
+                                tipString = '恭喜你，修改成功'
+                            }
+                            this.isEdit = false
+                            this.$message({
+                                message: tipString,
+                                type: 'success'
+                            });
+                            this.getDeviceList();
+                            this.resetForm('ruleForm')
+                        }else{
+                            this.$message.error('添加错误，请重试');
+                        }
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
                 }
-            })
+            });
 
         },
         //获取信息

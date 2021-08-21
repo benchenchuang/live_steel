@@ -85,8 +85,8 @@
         </site-footer>
 
         <el-dialog :title="isEdit?'修改':'新增'" :visible.sync="tableVisible" :before-close="closeDialog" center width="500px">
-            <el-form :model="ruleForm" ref="ruleForm" inline label-width="140px">
-                <el-form-item label="通信方式">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" inline label-width="140px">
+                <el-form-item label="通信方式" prop="coll_type">
                     <el-select v-model="ruleForm.coll_type" placeholder="请选择通信方式">
                         <el-option label="TCP" value="tcp"></el-option>
                         <el-option label="RTU" value="rtu"></el-option>
@@ -120,7 +120,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="resetForm('ruleForm')">取 消</el-button>
-                <el-button type="primary" @click="submitInfo">确 定</el-button>
+                <el-button type="primary" @click="submitInfo('ruleForm')">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -157,7 +157,30 @@ export default {
             ruleForm:{...originForm},
             deleteBox:[],
             isEdit:false,
-            eidtIndex:''
+            eidtIndex:'',
+            rules: {
+                coll_type: [
+                    { required: true, message: '请选择通信方式', trigger: 'change' }
+                ],
+                name: [
+                    { required: true, message: '请输入名称', trigger: 'blur' }
+                ],
+                ip: [
+                    { required: true, message: '请输入ip地址', trigger: 'blur' }
+                ],
+                port: [
+                    { required: true, message: '请输入端口号', trigger: 'blur' }
+                ],
+                com: [
+                    { required: true, message: '请输入串口号', trigger: 'blur' }
+                ],
+                baud: [
+                    { required: true, message: '请输入波特率', trigger: 'blur' }
+                ],
+                slave: [
+                    { required: true, message: '请输入从站地址', trigger: 'blur' }
+                ]
+            }
         }
     },
     created(){
@@ -217,60 +240,41 @@ export default {
             })
         },
         //提交表单信息
-        submitInfo(){
-            let query = JSON.parse(JSON.stringify(this.ruleForm));
-            let list = this.list;
-            let isEdit = this.isEdit;
-            let editIndex = this.editIndex;
-            if(!query.name){
-                this.$message.error('请输入名称');
-                return false;
-            }
-            if(query.coll_type=='tcp'){
-                if(!query.ip){
-                    this.$message.error('请输入IP地址');
-                    return false;
-                }
-                if(!query.port){
-                    this.$message.error('请输入端口号');
-                    return false;
-                }
-            }else{
-                if(!query.com){
-                    this.$message.error('请输入串口号');
-                    return false;
-                }
-                if(!query.baud){
-                    this.$message.error('请输入波特率');
-                    return false;
-                }
-            }
-            if(!query.slave){
-                this.$message.error('请输入从站地址');
-                return false;
-            }
-            if(isEdit){
-                list[editIndex] = query;
-            }else{
-                list = [...list,query];
-            }
-            requestApi.addDevice({device:list}).then(res=>{
-                if(res.code==1000){
-                    let tipString = '恭喜你，添加成功'
+        submitInfo(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let query = JSON.parse(JSON.stringify(this.ruleForm));
+                    let list = this.list;
+                    let isEdit = this.isEdit;
+                    let editIndex = this.editIndex;
                     if(isEdit){
-                        tipString = '恭喜你，修改成功'
+                        list[editIndex] = query;
+                    }else{
+                        list = [...list,query];
                     }
-                    this.isEdit = false
-                    this.$message({
-                        message: tipString,
-                        type: 'success'
-                    });
-                    this.getDeviceList();
-                    this.resetForm('ruleForm')
-                }else{
-                    this.$message.error('添加错误，请重试');
+                    requestApi.addDevice({device:list}).then(res=>{
+                        if(res.code==1000){
+                            let tipString = '恭喜你，添加成功'
+                            if(isEdit){
+                                tipString = '恭喜你，修改成功'
+                            }
+                            this.isEdit = false
+                            this.$message({
+                                message: tipString,
+                                type: 'success'
+                            });
+                            this.getDeviceList();
+                            this.resetForm('ruleForm')
+                        }else{
+                            this.$message.error('添加错误，请重试');
+                        }
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
                 }
-            })
+            });
+            
 
         },
         //获取信息
