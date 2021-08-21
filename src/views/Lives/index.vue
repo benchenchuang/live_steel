@@ -173,6 +173,7 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: column;
+    height:100%;
   }
   .lives_box {
     flex: 1;
@@ -180,6 +181,7 @@ export default {
     padding: 4px 0;
     flex-wrap: wrap;
     align-content: flex-start;
+    height:100%;
     .live_item {
       position: relative;
       width: 33.3%;
