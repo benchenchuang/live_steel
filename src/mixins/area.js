@@ -11,6 +11,7 @@ export const areaMixin={
             warnObject:'',
             isAutoCancel:false,
             videoUrl:'http://47.93.23.221:9982/hls/test.m3u8',
+            sortIndex:0
         }
     },
     created(){
@@ -128,11 +129,27 @@ export const areaMixin={
             numberBox = this.reverserBox(numberBox);
             lowerBox = this.reverserBox(lowerBox);
             upperBox = this.reverserBox(upperBox);
-            return [...numberBox,...lowerBox,...upperBox]
+            return [...lowerBox,...upperBox,...numberBox]
         },
         reverserBox(data){
-            data.sort(function (a, b) { return b.b_no.charCodeAt() - a.b_no.charCodeAt() }).reverse();
+            data.sort(function (a, b) {
+                this.sortIndex = 0;
+                return sortCode(a,b,index)
+             }).reverse();
             return data
+        },
+        sortCode(a,b,rank){
+        	let bNumber = b.b_no.charCodeAt(rank);
+        	let aNumber = a.b_no.charCodeAt(rank);
+        	if(bNumber==aNumber){
+        		this.sortIndex++;
+        		return this.sortCode(a,b,this.sortIndex)
+        	}else{
+        		if(rank>0){
+        			return aNumber - bNumber
+        		}
+        		return bNumber-aNumber
+        	}
         }
     },
     beforeDestroy(){

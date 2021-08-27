@@ -1,7 +1,7 @@
 <template>
   <div v-divDrag class="live_modal drag-body">
     <div v-for="(item, index) in alarmBox" :key="item.id">
-      <div class="live_item">
+      <div class="live_item" v-show="item.show">
         <div class="live_item_info flex">
           <p class="flex_item">
             #{{ item.b_no }}号皮带#{{ item.d_no }}设备{{ item.msg }}
@@ -54,16 +54,16 @@ export default {
         let item = this.liveSource[index];
         clearInterval(this.liveTimer);
         
-        const loading = this.$loading({
-          lock: true,
-          text: "处理中",
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.7)"
-        });
+        // const loading = this.$loading({
+        //   lock: true,
+        //   text: "处理中",
+        //   spinner: "el-icon-loading",
+        //   background: "rgba(0, 0, 0, 0.7)"
+        // });
         await requestApi.streamStop({ rtsp: item.rtsp });
         this.liveSource.splice(index, 1);
         item.show = false;
-        loading.close();
+        // loading.close();
         this.alarmBox.splice(index, 1, item);
 
         this.liveTimer = setInterval(() => {
@@ -84,6 +84,7 @@ export default {
             this.alarmBox.map(async item=>{
               let res = await requestApi.streamStart({ rtsp: item.rtsp });
                   item.rtsp = res.data;
+                  item.show = true;
             })
             this.liveSource = JSON.parse(JSON.stringify(alarmList));
           }

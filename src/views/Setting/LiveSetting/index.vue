@@ -99,7 +99,14 @@
                     <el-input type="text" v-model="ruleForm.port"></el-input>
                 </el-form-item>
                 <el-form-item label="所属皮带" prop="belt">
-                    <el-input type="number" v-model="ruleForm.belt"></el-input>
+                    <el-select v-model="ruleForm.belt" placeholder="请选择">
+                        <el-option
+                            v-for="item in beltBox"
+                            :key="item.b_no"
+                            :label="item.b_no+'#皮带'"
+                            :value="item.b_no">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="监视区域" prop="area">
                     <el-input type="text" v-model="ruleForm.area"></el-input>
@@ -163,7 +170,7 @@ export default {
                     { required: true, message: '请输入端口号', trigger: 'blur' }
                 ],
                 belt: [
-                    { required: true, message: '请输入所属皮带', trigger: 'blur' }
+                    { required: true, message: '请选择所属皮带', trigger: 'change' }
                 ],
                 area: [
                     { required: true, message: '请输入监视区域', trigger: 'blur' }
@@ -194,6 +201,7 @@ export default {
             this.isEdit = true;
             this.editIndex = index;
             item.device = item.device.toString();
+            item.belt = item.belt+'';
             this.ruleForm = item;
             this.tableVisible = true;
         },
@@ -302,6 +310,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+/deep/ .el-form-item__content{
+    width:260px;
+    .el-select{
+        width:100%;
+    }
+}
 .setter_box{
     font-size: 18px;
     margin: 20px auto;
