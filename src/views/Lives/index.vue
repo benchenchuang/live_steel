@@ -173,7 +173,7 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: column;
-    height:100%;
+    height:calc(100vh - 212px);
   }
   .lives_box {
     flex: 1;
